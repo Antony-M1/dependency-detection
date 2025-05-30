@@ -1,0 +1,10 @@
+*_env
+venv
+.venv
+env
+.env
+temp
+temp_*
+logs
+.vscode
+__pycache__
