@@ -51,8 +51,8 @@ def get_start():
             logger.critical(f"An unexpected error occurred while installing {cli_arg.package_name}=={release}: {e}")
 
     df = pd.DataFrame(DATA)
-    df.to_csv(f'temp/{cli_arg.package_name}_versions.csv', index=False)
-    logger.info(f"Data saved to temp/{cli_arg.package_name}_versions.csv")
+    df.to_csv(f'temp/{cli_arg.package_name}/{cli_arg.package_name}_versions.csv', index=False)
+    logger.info(f"Data saved to temp/{cli_arg.package_name}/{cli_arg.package_name}_versions.csv")
 
 
 def delete_virtual_env_v2():
@@ -95,7 +95,8 @@ def install_package_in_env(release):
     logger.info(f"Package {package_name} installed successfully in the virtual environment.")
     logger.info(f"Available releases: {', '.join(get_releases(read_json_file(package_info_path)))}")
 
-    freeze_file_name = f"temp/{cli_arg.package_name}_{release}.txt"
+    freeze_file_name = f"temp/{cli_arg.package_name}/{cli_arg.package_name}_{release}.txt"
+    os.makedirs(os.path.dirname(freeze_file_name), exist_ok=True)
 
     with open(freeze_file_name, "w") as f:
         subprocess.run([PYTHON_PATH, "-m", "pip", "freeze"], stdout=f, check=True)
@@ -140,9 +141,9 @@ def read_json_file(filepath: str) -> dict:
 
 
 def get_all_the_versions():
-    os.makedirs("temp", exist_ok=True)
+    os.makedirs(f"temp/{cli_arg.package_name}", exist_ok=True)
     global package_info_path
-    package_info_path = f'temp/{cli_arg.package_name}.json'
+    package_info_path = f'temp/{cli_arg.package_name}/{cli_arg.package_name}.json'
     cmd = [
         "curl",
         "-s",
