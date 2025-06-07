@@ -16,7 +16,7 @@ def get_start():
     get_all_the_versions()
     package_info = read_json_file(package_info_path)
     releases = get_releases(package_info)
-    prime_packages = cli_arg.prime_package.split(',')
+    prime_packages = list(set(cli_arg.prime_package.split(',')))
     global DATA
     DATA = {
         f'{cli_arg.package_name}_version': []
